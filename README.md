@@ -4,6 +4,10 @@ NoteCards is a minimal local-first flashcard app built with Next.js App Router, 
 
 Everything is stored in browser `localStorage`. There is no backend, database, auth, or external API in V1.
 
+
+<img width="1917" height="902" alt="image" src="https://github.com/user-attachments/assets/a890bc67-b6df-4968-ac3f-d5e2a98af19c" />
+
+
 ## Setup
 
 ```bash
