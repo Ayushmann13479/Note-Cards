@@ -1,0 +1,31 @@
+﻿@import "tailwindcss";
+
+:root {
+  --background: #f7f2ea;
+  --foreground: #1c1b18;
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(21, 94, 117, 0.18), transparent 32rem),
+    linear-gradient(135deg, rgba(244, 114, 182, 0.12), transparent 28rem),
+    var(--background);
+  color: var(--foreground);
+}
+
+button,
+a,
+input,
+textarea {
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+button:active,
+a:active {
+  transform: translateY(1px);
+}
