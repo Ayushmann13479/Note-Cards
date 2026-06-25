@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { CardComposer } from "@/components/CardComposer";
 import { EmptyState } from "@/components/EmptyState";
@@ -25,9 +25,7 @@ export default function EditDeckPage() {
     setLoaded(true);
   }, [params.id]);
 
-  function saveDeck(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
+  function saveDeck() {
     if (!deck) {
       return;
     }
@@ -62,7 +60,7 @@ export default function EditDeckPage() {
   }
 
   return (
-    <form className="grid gap-6" onSubmit={saveDeck}>
+    <div className="grid gap-6">
       <section className="rounded-lg border border-black/10 bg-white/75 p-6 shadow-sm">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
@@ -82,13 +80,13 @@ export default function EditDeckPage() {
               className="rounded-md border border-black/15 bg-white px-3 py-3 text-base font-normal outline-none focus:border-[#155e75] focus:ring-4 focus:ring-cyan-800/10"
             />
           </label>
-          <button type="submit" className="rounded-md bg-black px-5 py-3 text-sm font-semibold text-white hover:bg-black/80">
+          <button type="button" onClick={saveDeck} className="rounded-md bg-black px-5 py-3 text-sm font-semibold text-white hover:bg-black/80">
             Save Changes
           </button>
         </div>
         {error ? <p className="mt-3 text-sm font-semibold text-[#be123c]">{error}</p> : null}
       </section>
       <CardComposer initialCards={cards} onCardsChange={setCards} />
-    </form>
+    </div>
   );
 }
