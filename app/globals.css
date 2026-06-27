@@ -1,8 +1,15 @@
 ﻿@import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #f7f2ea;
   --foreground: #1c1b18;
+}
+
+.dark {
+  --background: #141210;
+  --foreground: #f5f0e8;
 }
 
 body {
@@ -11,6 +18,13 @@ body {
     linear-gradient(135deg, rgba(244, 114, 182, 0.12), transparent 28rem),
     var(--background);
   color: var(--foreground);
+}
+
+.dark body {
+  background:
+    radial-gradient(circle at top left, rgba(21, 94, 117, 0.22), transparent 32rem),
+    linear-gradient(135deg, rgba(244, 114, 182, 0.08), transparent 28rem),
+    var(--background);
 }
 
 button,

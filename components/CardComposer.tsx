@@ -3,6 +3,7 @@
 import { FormEvent, useMemo, useState } from "react";
 import type { NewCardInput, ReviewCard } from "@/types/notecards";
 import { createReviewCard, parseMarkdownCards } from "@/lib/cards";
+import { formatRelativeReviewDate } from "@/lib/dates";
 
 type CardComposerProps = {
   initialCards?: ReviewCard[];
@@ -56,7 +57,7 @@ export function CardComposer({ initialCards = [], onCardsChange }: CardComposerP
 
   return (
     <div className="grid gap-5 lg:grid-cols-[1fr_1fr]">
-      <section className="rounded-lg border border-black/10 bg-white/75 p-5 shadow-sm">
+      <section className="rounded-lg border border-black/10 bg-white/75 p-5 shadow-sm dark:border-white/10 dark:bg-white/10">
         <h2 className="text-lg font-black">Manual entry</h2>
         <form className="mt-4 grid gap-4" onSubmit={addManualCard}>
           <label className="grid gap-2 text-sm font-semibold">
@@ -64,7 +65,7 @@ export function CardComposer({ initialCards = [], onCardsChange }: CardComposerP
             <textarea
               value={question}
               onChange={(event) => setQuestion(event.target.value)}
-              className="min-h-28 resize-y rounded-md border border-black/15 bg-white px-3 py-2 font-normal outline-none focus:border-[#155e75] focus:ring-4 focus:ring-cyan-800/10"
+              className="min-h-28 resize-y rounded-md border border-black/15 bg-white px-3 py-2 font-normal outline-none focus:border-[#155e75] focus:ring-4 focus:ring-cyan-800/10 dark:border-white/15 dark:bg-white/5 dark:text-white"
               placeholder="What do you want to remember?"
             />
           </label>
@@ -73,7 +74,7 @@ export function CardComposer({ initialCards = [], onCardsChange }: CardComposerP
             <textarea
               value={answer}
               onChange={(event) => setAnswer(event.target.value)}
-              className="min-h-28 resize-y rounded-md border border-black/15 bg-white px-3 py-2 font-normal outline-none focus:border-[#155e75] focus:ring-4 focus:ring-cyan-800/10"
+              className="min-h-28 resize-y rounded-md border border-black/15 bg-white px-3 py-2 font-normal outline-none focus:border-[#155e75] focus:ring-4 focus:ring-cyan-800/10 dark:border-white/15 dark:bg-white/5 dark:text-white"
               placeholder="The crisp answer future-you needs."
             />
           </label>
@@ -86,16 +87,16 @@ export function CardComposer({ initialCards = [], onCardsChange }: CardComposerP
         </form>
       </section>
 
-      <section className="rounded-lg border border-black/10 bg-white/75 p-5 shadow-sm">
+      <section className="rounded-lg border border-black/10 bg-white/75 p-5 shadow-sm dark:border-white/10 dark:bg-white/10">
         <h2 className="text-lg font-black">Bulk markdown paste</h2>
         <textarea
           value={markdown}
           onChange={(event) => setMarkdown(event.target.value)}
-          className="mt-4 min-h-72 w-full resize-y rounded-md border border-black/15 bg-white px-3 py-2 text-sm outline-none focus:border-[#155e75] focus:ring-4 focus:ring-cyan-800/10"
+          className="mt-4 min-h-72 w-full resize-y rounded-md border border-black/15 bg-white px-3 py-2 text-sm outline-none focus:border-[#155e75] focus:ring-4 focus:ring-cyan-800/10 dark:border-white/15 dark:bg-white/5 dark:text-white"
           placeholder={sampleMarkdown}
         />
         <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm font-medium text-black/60">
+          <p className="text-sm font-medium text-black/60 dark:text-white/60">
             {parsedCount} {parsedCount === 1 ? "card" : "cards"} detected
           </p>
           <button
@@ -116,12 +117,15 @@ export function CardComposer({ initialCards = [], onCardsChange }: CardComposerP
         <div className="grid gap-3">
           {cards.length ? (
             cards.map((card, index) => (
-              <article key={card.id} className="rounded-lg border border-black/10 bg-white/80 p-4 shadow-sm">
+              <article key={card.id} className="rounded-lg border border-black/10 bg-white/80 p-4 shadow-sm dark:border-white/10 dark:bg-white/5">
                 <div className="flex items-start justify-between gap-4">
                   <div className="grid gap-2">
                     <p className="text-xs font-black uppercase tracking-[0.16em] text-[#be123c]">Card {index + 1}</p>
                     <h3 className="font-bold">{card.question}</h3>
-                    <p className="text-sm leading-6 text-black/65">{card.answer}</p>
+                    <p className="text-sm leading-6 text-black/65 dark:text-white/65">{card.answer}</p>
+                    <p className="text-xs font-semibold text-black/45 dark:text-white/45">
+                      {formatRelativeReviewDate(card.nextReviewDate)}
+                    </p>
                   </div>
                   <button
                     type="button"
@@ -134,7 +138,7 @@ export function CardComposer({ initialCards = [], onCardsChange }: CardComposerP
               </article>
             ))
           ) : (
-            <div className="rounded-lg border border-dashed border-black/20 bg-white/55 p-5 text-sm text-black/60">
+            <div className="rounded-lg border border-dashed border-black/20 bg-white/55 p-5 text-sm text-black/60 dark:border-white/15 dark:bg-white/5 dark:text-white/60">
               Cards you add manually or import from markdown will appear here.
             </div>
           )}

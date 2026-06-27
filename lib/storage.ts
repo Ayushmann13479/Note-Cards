@@ -1,7 +1,7 @@
 "use client";
 
 import type { Deck, ReviewCard } from "@/types/notecards";
-import { createId } from "@/lib/cards";
+import { createId, createReviewCard } from "@/lib/cards";
 
 const STORAGE_KEY = "notecards.decks.v1";
 
@@ -55,6 +55,25 @@ export function updateDeck(updatedDeck: Deck) {
 
 export function deleteDeck(id: string) {
   saveDecks(getDecks().filter((deck) => deck.id !== id));
+}
+
+export function createSampleDeck() {
+  const cards = [
+    createReviewCard({
+      question: "What is spaced repetition?",
+      answer: "A learning technique that schedules reviews at increasing intervals to strengthen long-term memory.",
+    }),
+    createReviewCard({
+      question: "What does SM-2 optimize for?",
+      answer: "Review timing based on how well you recall each item, spacing harder cards sooner and easy cards later.",
+    }),
+    createReviewCard({
+      question: "Why use flashcards for recall?",
+      answer: "They force active retrieval, which is more effective than passive re-reading for retention.",
+    }),
+  ];
+
+  return createDeck({ name: "Getting started", cards });
 }
 
 function saveDecks(decks: Deck[]) {

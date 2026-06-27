@@ -1,13 +1,15 @@
 ﻿"use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { EmptyState } from "@/components/EmptyState";
-import { deleteDeck, getDecks } from "@/lib/storage";
+import { createSampleDeck, deleteDeck, getDecks } from "@/lib/storage";
 import { formatDate, isDueTodayOrEarlier } from "@/lib/dates";
 import type { Deck } from "@/types/notecards";
 
 export default function HomePage() {
+  const router = useRouter();
   const [decks, setDecks] = useState<Deck[]>([]);
   const [loaded, setLoaded] = useState(false);
 
@@ -32,6 +34,11 @@ export default function HomePage() {
     setDecks(getDecks());
   }
 
+  function handleTrySampleDeck() {
+    const deck = createSampleDeck();
+    router.push(`/decks/${deck.id}/review`);
+  }
+
   if (!loaded) {
     return null;
   }
@@ -39,7 +46,7 @@ export default function HomePage() {
   return (
     <div className="grid gap-6">
       <section className="grid gap-4 md:grid-cols-[1.4fr_0.6fr_0.6fr]">
-        <div className="rounded-lg border border-black/10 bg-white/70 p-6 shadow-sm">
+        <div className="rounded-lg border border-black/10 bg-white/70 p-6 shadow-sm dark:border-white/10 dark:bg-white/10">
           <p className="text-xs font-black uppercase tracking-[0.18em] text-[#be123c]">Deck library</p>
           <h1 className="mt-2 text-4xl font-black tracking-tight">Build small decks. Review what is due.</h1>
         </div>
@@ -59,17 +66,17 @@ export default function HomePage() {
             const dueCount = deck.cards.filter((card) => isDueTodayOrEarlier(card.nextReviewDate)).length;
 
             return (
-              <article key={deck.id} className="rounded-lg border border-black/10 bg-white/80 p-5 shadow-sm">
+              <article key={deck.id} className="rounded-lg border border-black/10 bg-white/80 p-5 shadow-sm dark:border-white/10 dark:bg-white/5">
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <h2 className="text-xl font-black tracking-tight">{deck.name}</h2>
-                    <p className="mt-1 text-sm text-black/60">Created {formatDate(deck.createdAt)}</p>
+                    <p className="mt-1 text-sm text-black/60 dark:text-white/60">Created {formatDate(deck.createdAt)}</p>
                   </div>
-                  <span className="rounded-full bg-black px-3 py-1 text-xs font-bold text-white">
+                  <span className="rounded-full bg-black px-3 py-1 text-xs font-bold text-white dark:bg-white dark:text-black">
                     {deck.cards.length} {deck.cards.length === 1 ? "card" : "cards"}
                   </span>
                 </div>
-                <div className="mt-5 rounded-md bg-[#f7f2ea] p-3 text-sm font-semibold text-black/70">
+                <div className="mt-5 rounded-md bg-[#f7f2ea] p-3 text-sm font-semibold text-black/70 dark:bg-white/5 dark:text-white/70">
                   {dueCount ? `${dueCount} due now` : "Nothing due yet"}
                 </div>
                 <div className="mt-5 flex flex-wrap gap-2">
@@ -81,14 +88,14 @@ export default function HomePage() {
                   </Link>
                   <Link
                     href={`/decks/${deck.id}/edit`}
-                    className="rounded-md border border-black/10 bg-white px-3 py-2 text-sm font-semibold hover:border-black/20"
+                    className="rounded-md border border-black/10 bg-white px-3 py-2 text-sm font-semibold hover:border-black/20 dark:border-white/10 dark:bg-white/10 dark:text-white dark:hover:bg-white/15"
                   >
                     Edit
                   </Link>
                   <button
                     type="button"
                     onClick={() => handleDelete(deck.id)}
-                    className="rounded-md border border-black/10 bg-white px-3 py-2 text-sm font-semibold hover:border-rose-300 hover:bg-rose-50 hover:text-rose-700"
+                    className="rounded-md border border-black/10 bg-white px-3 py-2 text-sm font-semibold hover:border-rose-300 hover:bg-rose-50 hover:text-rose-700 dark:border-white/10 dark:bg-white/10 dark:text-white dark:hover:border-rose-800 dark:hover:bg-rose-950/40 dark:hover:text-rose-200"
                   >
                     Delete
                   </button>
@@ -100,9 +107,11 @@ export default function HomePage() {
       ) : (
         <EmptyState
           title="No decks yet"
-          description="Create your first deck manually or paste a few Q:/A: markdown pairs. Everything stays in this browser."
+          description="Create your first deck manually or paste a few Q:/A: markdown pairs. You can also try a sample deck with three cards to see how review works."
           actionHref="/decks/new"
           actionLabel="Create a deck"
+          secondaryActionLabel="Try sample deck"
+          onSecondaryAction={handleTrySampleDeck}
         />
       )}
     </div>
