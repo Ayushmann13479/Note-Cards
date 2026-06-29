@@ -8,6 +8,10 @@ Everything is stored in browser `localStorage`. There is no backend, database, a
 <img width="1917" height="902" alt="image" src="https://github.com/user-attachments/assets/a890bc67-b6df-4968-ac3f-d5e2a98af19c" />
 
 
+<img width="1712" height="861" alt="image" src="https://github.com/user-attachments/assets/bfc45f0d-78dd-45bd-b4fd-148ddf2e3d47" />
+
+
+
 ## Setup
 
 ```bash
